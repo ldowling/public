@@ -4854,6 +4854,7 @@ Yard Waste Pick-Up Request
 </tbody>
 </table>
 </div>
+<hr />
 <p>From this table I was then able to calculate the coefficient of variation for each request type to find those with the <em>most</em> variance over a year. I took the most variant request types (coefficient of variation &gt; 100) that had a high enough <em>maximum</em> number of requests in one month and plotted their <em>total</em> number of requests per month.</p>
 <p><img src="311_files/figure-html/q2_plot-1.png" width="672" /></p>
 <p>These graphs show a pretty clear pattern of certain service requests being much more common in different times of the year. Requests related to outdoor work or activities (bee/wasp removal, pushcart food vendor complaints, open fire hydrant complaints for example) are much more common in the warmer months. Conversely requests related to snow and ice are much more common in the colder months.</p>
@@ -4939,8 +4940,8 @@ print(td_ggplot)</code></pre>
 <h2><strong>Question #4</strong></h2>
 <div id="which-departments-are-bestworst-at-closing-requests-quickly" class="section level3">
 <h3>Which departments are best/worst at closing requests quickly?</h3>
-<p>This question required a slightly different subset of the original data set. In this case I selected columns related to service request type and date, but also selected the <code>owner_department</code> column. To figure out which departments were the fastest and which were the slowest I used the “created” and “closed” dates for each request type. I used this column to create a summary of average time differential (in days) of the “created” and “closed” dates to get an average lifespan for each request type per department. Averaging these numbers together gives an average lifespan for a request for each department. From there it’s as simple as sorting by lifespan.</p>
-<hr />
+This question required a slightly different subset of the original data set. In this case I selected columns related to service request type and date, but also selected the <code>owner_department</code> column. To figure out which departments were the fastest and which were the slowest I used the “created” and “closed” dates for each request type. I used this column to create a summary of average time differential (in days) of the “created” and “closed” dates to get an average lifespan for each request type per department. Averaging these numbers together gives an average lifespan for a request for each department. From there it’s as simple as sorting by lifespan.<br />
+***
 <table>
 <thead>
 <tr>
