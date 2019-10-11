@@ -138,7 +138,7 @@ kable(select(ty_sum, -max,-min,-cv),align="lc",
       col.names=c("Request Type", month.abb)) %>% 
   kable_styling() %>% scroll_box(height="400px")
 ```
-***
+<br>
 From this table I was then able to calculate the coefficient of variation for each request type to find those with the *most* variance over a year. I took the most variant request types (coefficient of variation > 100) that had a high enough *maximum* number of requests in one month and plotted their *total* number of requests per month. 
 
 ```{r q2_plot, echo=FALSE}
