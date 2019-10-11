@@ -11,9 +11,12 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
-
-### Looking at some data from a buget survey for FY 2020.
-```{r budget, results=FALSE}
+```{r dependencies, message=FALSE, include=FALSE, results=FALSE}
+source("generic_functions/ez_setup.R")
+ez_setup(install=TRUE, extras=c("RSocrata","stringr","knitr","kableExtra"))
+```
+### Visualizing some data collected in a [budget survey](https://data.cityofchicago.org/Administration-Finance/Budget-Survey-2020/drbg-ny73) by the City of Chicago.
+```{r budget, echo=FALSE, results=FALSE}
 budget <- read.socrata("https://data.cityofchicago.org/api/views/drbg-ny73/rows.csv?accessType=DOWNLOAD", "ykQDb7IDvb4jrHDEx6hk7f8uF")
 
 gbudget <- gather(budget, cat, value, -c(date, zip_code, counter_column)) %>% 
@@ -54,21 +57,67 @@ for (gbcat in gb_sum$category) {
 }
 ```
 
-* The budget survey collected data on public interest in receiving more information about revenue and expenses.
+The budget survey collected data on public interest in receiving more information about revenue and expenses.
 
 ```{r budget_plot_1, echo=FALSE}
 print(revenue_int + labs(title="Respondent reported interest in information on a source of revenue"))
 print(expense_int + labs(title="Respondent reported interest in information on a type of expenditure"))
 ```
 
-* The survey also asked questions on which revenue changes or spending changes could be made to balance the city's budget. Note that there is no option offered in the revenue section for "decrease revenue".
+***
+The survey also asked questions on which revenue changes or spending changes could be made to balance the city's budget. 
+
+* Note that there is no option offered in the revenue section for "decrease revenue".
 
 ```{r budget_plot_2, echo=FALSE}
 revenue_cha + labs(title=str_wrap("Which revenues would you consider increasing or keeping the same in order to balance the City’s budget?", width=60))
 spending_cha + labs(title=str_wrap("Which areas of spending would you consider reducing, increasing or remaining the same in order to balance the City’s budget?", width=70))
 ```
 
-* Finally, there was a question about how each respondent would allocate $1,000 of the city's budget.
+```{r budget_code, eval=FALSE}
+budget <- read.socrata("https://data.cityofchicago.org/api/views/drbg-ny73/rows.csv?accessType=DOWNLOAD", "ykQDb7IDvb4jrHDEx6hk7f8uF")
+
+gbudget <- gather(budget, cat, value, -c(date, zip_code, counter_column)) %>% 
+           mutate(cat=gsub("(?<=assignment)_","-",cat, perl = TRUE)) %>% 
+           mutate(cat=gsub("(?<=change)_","-",cat, perl = TRUE)) %>% 
+           mutate(cat=gsub("(?<=interest)_","-",cat, perl = TRUE)) %>% 
+           separate(cat, c("category", "type"), sep="-") %>% 
+           select(-counter_column) %>% mutate(id=1:nrow(.))
+gbudget$value <- gsub("Increase.*","increase",gbudget$value) %>% 
+                 gsub(".*Same","no change",.) %>% gsub("Reduce.*","reduce",.) %>% 
+                 gsub("No Opinion","no opinion",.) %>% tolower()
+gbudget$value[gbudget$value==""] <- NA
+gbudget$value[is.na(gbudget$value)] <- "no answer"
+gb <- filter(gbudget, category!="X_1000_assignment")
+gb_sum <- summarize(group_by(gb, category, type, value), count=n()) %>% 
+        filter(value!="no answer")
+gb_sum$category <- gsub("_interest","_int",gb_sum$category) %>% 
+                 gsub("_change","_cha", .) %>% tolower()
+#generate all four plots above at once.
+for (gbcat in gb_sum$category) {
+  plot <- filter(gb_sum, category==gbcat)
+  if (grepl("_int$",gbcat)) {
+    plot$value <- factor(plot$value, levels=c("true","false"))
+  }else if (grepl("revenue",gbcat)){
+    plot$value <- factor(plot$value, levels=c("increase","no change", "no opinion"))
+  }else if (grepl("spending",gbcat)){
+    plot$value <- factor(plot$value, levels=c("increase","no change", "reduce"))
+  }
+  plot <- ggplot(plot, aes(str_wrap(str_to_title(gsub("_"," ",type)),
+                                    width=16), count, fill=value)) +
+     geom_col(position="dodge") +
+     #scale_x_discrete(labels=function(x){sub("\\s", "\n", x)}) +
+     labs(title=element_blank()) +
+     theme(axis.title.x=element_blank(),
+           axis.title.y=element_blank(),
+           legend.title=element_blank(),
+           axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
+    assign(gbcat, plot)
+}
+```
+
+***
+Finally, the survey asked how each respondent would hypothetically allocate $1,000 of the city's budget.
 
 ```{r 1_k_assign, echo=FALSE}
 assignment <- filter(gbudget, category=="X_1000_assignment") %>% 

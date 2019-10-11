@@ -213,8 +213,16 @@ $(document).ready(function () {
 </div>
 
 
-<div id="looking-at-some-data-from-a-buget-survey-for-fy-2020." class="section level3">
-<h3>Looking at some data from a buget survey for FY 2020.</h3>
+<div id="visualizing-some-data-collected-in-a-budget-survey-by-the-city-of-chicago." class="section level3">
+<h3>Visualizing some data collected in a <a href="https://data.cityofchicago.org/Administration-Finance/Budget-Survey-2020/drbg-ny73">budget survey</a> by the City of Chicago.</h3>
+<p>The budget survey collected data on public interest in receiving more information about revenue and expenses.</p>
+<p><img src="budget_analysis_files/figure-html/budget_plot_1-1.png" width="672" /><img src="budget_analysis_files/figure-html/budget_plot_1-2.png" width="672" /></p>
+<hr />
+<p>The survey also asked questions on which revenue changes or spending changes could be made to balance the city’s budget.</p>
+<ul>
+<li>Note that there is no option offered in the revenue section for “decrease revenue”.</li>
+</ul>
+<p><img src="budget_analysis_files/figure-html/budget_plot_2-1.png" width="672" /><img src="budget_analysis_files/figure-html/budget_plot_2-2.png" width="672" /></p>
 <pre class="r"><code>budget &lt;- read.socrata(&quot;https://data.cityofchicago.org/api/views/drbg-ny73/rows.csv?accessType=DOWNLOAD&quot;, &quot;ykQDb7IDvb4jrHDEx6hk7f8uF&quot;)
 
 gbudget &lt;- gather(budget, cat, value, -c(date, zip_code, counter_column)) %&gt;% 
@@ -233,6 +241,7 @@ gb_sum &lt;- summarize(group_by(gb, category, type, value), count=n()) %&gt;%
         filter(value!=&quot;no answer&quot;)
 gb_sum$category &lt;- gsub(&quot;_interest&quot;,&quot;_int&quot;,gb_sum$category) %&gt;% 
                  gsub(&quot;_change&quot;,&quot;_cha&quot;, .) %&gt;% tolower()
+#generate all four plots above at once.
 for (gbcat in gb_sum$category) {
   plot &lt;- filter(gb_sum, category==gbcat)
   if (grepl(&quot;_int$&quot;,gbcat)) {
@@ -253,17 +262,8 @@ for (gbcat in gb_sum$category) {
            axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
     assign(gbcat, plot)
 }</code></pre>
-<ul>
-<li>The budget survey collected data on public interest in receiving more information about revenue and expenses.</li>
-</ul>
-<p><img src="budget_analysis_files/figure-html/budget_plot_1-1.png" width="672" /><img src="budget_analysis_files/figure-html/budget_plot_1-2.png" width="672" /></p>
-<ul>
-<li>The survey also asked questions on which revenue changes or spending changes could be made to balance the city’s budget. Note that there is no option offered in the revenue section for “decrease revenue”.</li>
-</ul>
-<p><img src="budget_analysis_files/figure-html/budget_plot_2-1.png" width="672" /><img src="budget_analysis_files/figure-html/budget_plot_2-2.png" width="672" /></p>
-<ul>
-<li>Finally, there was a question about how each respondent would allocate $1,000 of the city’s budget.</li>
-</ul>
+<hr />
+<p>Finally, the survey asked how each respondent would hypothetically allocate $1,000 of the city’s budget.</p>
 <p><img src="budget_analysis_files/figure-html/1_k_assign-1.png" width="672" /></p>
 </div>
 
