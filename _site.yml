@@ -1,0 +1,6 @@
+name: "Test 1"
+output_dir: "."
+output:
+  html_document:
+    theme: readable
+    css: 'styles.css'
