@@ -11,3 +11,5 @@ forcats
 lubridate
 data.table
 RSocrata
+knitr
+kableExtra

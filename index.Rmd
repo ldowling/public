@@ -16,4 +16,4 @@ editor_options:
 
 ## Here's a list of my current completed projects:
 * [City of Chicago - 311 data analysis](https://ldowling.github.io/public/311.html)
-* City of Chicago - Budget Survey analysis
+* [City of Chicago - Budget Survey analysis](https://ldowling.github.io/public/budget_analysis.html)
