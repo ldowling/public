@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R Notebook</title>
+
+<script src="data_analysis_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="data_analysis_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="data_analysis_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="data_analysis_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="data_analysis_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="data_analysis_files/navigation-1.1/tabsets.js"></script>
+<script src="data_analysis_files/navigation-1.1/codefolding.js"></script>
+<link href="data_analysis_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="data_analysis_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="data_analysis_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="data_analysis_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">R Notebook</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#question-1"><strong>Question #1</strong></a></li>
+<li><a href="#question-2"><strong>Question #2</strong></a></li>
+<li><a href="#question-3"><strong>Question #3</strong></a></li>
+<li><a href="#question-4"><strong>Question #4</strong></a></li>
+<li><a href="#need-to-still-add-summary-statement-from-code-above-like-after-q1">NEED TO STILL ADD SUMMARY STATEMENT FROM CODE ABOVE LIKE AFTER Q1</a><ul>
+<li><a href="#bonus-section-on-budget.">Bonus section on budget.</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="looking-at-data-collected-about-311-service-requests-in-the-city-of-chicago." class="section level3">
+<h3>Looking at data collected about 311 service requests in the city of chicago.</h3>
+</div>
+<div id="using-this-data-to-answer-the-following-questions" class="section level3">
+<h3>Using this data to answer the following questions:</h3>
+<ol style="list-style-type: decimal">
+<li>What category of service request is addressed the fastest? The slowest?</li>
+<li>Do categories of service requests seem to be related to time of year?</li>
+<li>Which departments are best/worst at closing requests quickly?</li>
+<li>What kinds of service requests might be related to police presence?</li>
+<li>Which areas of budget changes are most/least popular?</li>
+</ol>
+<div id="start-off-by-reading-in-the-initial-data-table-and-doing-some-cleaning.-note-that-this-initial-downloadload-is-fairly-long-since-the-data-set-is-large." class="section level4">
+<h4>Start off by reading in the initial data table and doing some cleaning. Note that this initial download/load is fairly long since the data set is large.</h4>
+<pre class="r"><code>sr &lt;- data.table::fread(&quot;https://data.cityofchicago.org/api/views/dm4w-zcp5/rows.csv?accessType=DOWNLOAD&quot;)
+colnames(sr) &lt;- tolower(colnames(sr))
+colnames(sr) &lt;- gsub(&quot;community_area&quot;, &quot;area_id&quot;, colnames(sr))</code></pre>
+<ul>
+<li>Change column names and the <code>city</code> variable to lowercase.</li>
+<li>Rename the <code>community_area</code> variable to match the key variable name used later on.</li>
+<li>Filter the data set to only rows that have an Area ID and a Zip Code (this removes about 1.3% of total rows)</li>
+</ul>
+<div id="several-questions-can-be-answered-using-only-data-from-a-subset-of-the-main-table-which-contains-the-service-request-number-type-status-and-related-dates." class="section level5">
+<h5>Several questions can be answered using only data from a subset of the main table which contains the Service Request Number, Type, Status, and related Dates.</h5>
+<pre class="r"><code>sub &lt;- select(sr, sr_number, sr_type, status, ends_with(&quot;_date&quot;))
+sub[,4:5] &lt;- lapply(sub[,4:5], mdy_hms)</code></pre>
+<ul>
+<li>The data contained some blank values which needed to be converted to NA values.</li>
+<li>The date columns were also initially stored as text so are converted to Date class objects (technically <code>POSIXct</code>) to allow analysis.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="question-1" class="section level2">
+<h2><strong>Question #1</strong></h2>
+<div id="what-categories-of-service-requests-are-addressed-the-fastest-and-slowest" class="section level3">
+<h3>What categories of service requests are addressed the fastest and slowest?</h3>
+<pre class="r"><code>#subset to just completed requests
+completed &lt;- filter(sub, status==&quot;Completed&quot;) %&gt;% select(-status) %&gt;% 
+             mutate(dur_sec = as.numeric(difftime(.$closed_date,
+                                          .$created_date))
+                                          ) %&gt;% 
+             group_by(sr_type)
+#summarize the df of completed requests
+dur_sum &lt;- summarise(completed, 
+                     day_diff=difftime(closed_date,created_date,units=&quot;days&quot;)%&gt;%
+                              mean() %&gt;% round(digits=8)) %&gt;% filter(day_diff&gt;0.5)
+#find some specific values to print the results message
+min_idx &lt;- which(dur_sum$day_diff==min(dur_sum$day_diff))
+min_time &lt;- as.numeric(dur_sum$day_diff[min_idx])
+min_type &lt;- dur_sum$sr_type[min_idx]
+min_dur &lt;- nice_dur(min_time)
+
+max_idx &lt;- which(dur_sum$day_diff==max(dur_sum$day_diff))
+max_time &lt;- as.numeric(dur_sum$day_diff[max_idx])
+max_type &lt;- dur_sum$sr_type[max_idx]
+max_dur &lt;- nice_dur(max_time)</code></pre>
+<p>The results of the analysis found that the fastest request type fulfilled was the <strong>Sign Repair Request - Stop Sign</strong>, with an average completion time of <strong>14.23 hours</strong>. The slowest request type fulfilled was the <strong>Sidewalk Inspection Request</strong>, with an average completion time of <strong>145.44 days</strong>.</p>
+</div>
+</div>
+<div id="question-2" class="section level2">
+<h2><strong>Question #2</strong></h2>
+<div id="do-categories-of-service-requests-seem-to-be-related-to-time-of-year" class="section level3">
+<h3>Do categories of service requests seem to be related to time of year?</h3>
+<pre class="r"><code>ty &lt;- mutate(sub, month_created=lubridate::month(sub$created_date,label=TRUE)) %&gt;% 
+      group_by(sr_type, month_created) %&gt;% summarize(total_req=n()) %&gt;% 
+      spread(month_created, total_req)
+ty[is.na(ty)] &lt;- 0
+ty_sum &lt;- mutate(ungroup(ty), 
+                  max = do.call(pmax, c(ty[,-1], na.rm=TRUE)),
+                  min = do.call(pmin, c(ty[,-1], na.rm=TRUE))) %&gt;%
+                  mutate(.,cv = apply(ty[,c(2:13)], 1,function(x){
+                                  (sd(x, na.rm=TRUE)/mean(x, na.rm=TRUE))*100}))
+#high variance codes with a maximum request count of at least 10
+ty_hvc &lt;- filter(ty_sum, cv &gt; 100 &amp; max &gt; 10)
+
+to_plot &lt;- select(ty_hvc, sr_type,Jan:Dec) %&gt;% 
+           gather(key=&quot;month&quot;, value=&quot;count&quot;, -sr_type)
+to_plot$month &lt;- factor(to_plot$month, month.abb)
+
+ty_ggplot &lt;- ggplot(to_plot, aes(x=month, y=count, group=1)) +
+        geom_line() +
+        facet_wrap(~str_wrap(sr_type,width=19), scales=&quot;free_y&quot;) +
+        theme_classic() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+              axis.text.x = element_text(angle = 270, hjust = 1))</code></pre>
+<ul>
+<li>Add a column to the sub table created previously that notes the month that each request was created. Then group that able by the new month column.</li>
+<li>Generate a summary of requests per month for each type of request.</li>
+<li>Calculate the minimum and maximum number of requests in one month for each request type and then calculate the coefficient of variation for the request types to find those with the <em>most</em> variance over a year.</li>
+<li>Filter down to the top 12 most highly variant request types and plot them over the course of a year to compare.</li>
+</ul>
+<p><img src="data_analysis_files/figure-html/q2_plot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="question-3" class="section level2">
+<h2><strong>Question #3</strong></h2>
+<div id="do-categories-of-service-requests-seem-to-be-related-to-time-of-day" class="section level3">
+<h3>Do categories of service requests seem to be related to time of day?</h3>
+<pre class="r"><code>td &lt;- mutate(sub, time_exact=make_datetime(hour=hour(sub$created_date),
+                                               min=minute(sub$created_date),
+                                               sec=second(sub$created_date)) %&gt;% 
+                             format(format=&quot;%H:%M:%S&quot;),
+                  time_hour=hour(sub$created_date)) %&gt;% 
+      group_by(sr_type, time_hour) %&gt;% summarize(total_req=n()) %&gt;% 
+      spread(time_hour, total_req)
+td[is.na(td)] &lt;- 0
+td_sum &lt;- mutate(ungroup(td), 
+                 max = do.call(pmax, c(td[,-1], na.rm=TRUE))) %&gt;% 
+                 mutate(., cv = apply(td[,c(2:25)], 1,function(x){ 
+                                  (sd(x, na.rm=TRUE)/mean(x, na.rm=TRUE))*100} ))
+td_hvc &lt;- filter(td_sum, cv &gt; 100 &amp; max &gt; 20)
+
+to_plot &lt;- select(td_hvc, sr_type, `0`:`23`) %&gt;% 
+           gather(key=&quot;hour&quot;, value=&quot;count&quot;, -sr_type)
+to_plot$hour &lt;- as.numeric(to_plot$hour)
+
+td_ggplot &lt;- ggplot(to_plot, aes(x=hour, y=count, group=1)) +
+        geom_line() +
+        scale_x_continuous(breaks=unique(to_plot$hour)[unique(to_plot$hour)%%2==0], 
+               labels=c(&quot;12am&quot;, paste0(c(2,4,6,8,10),&quot;am&quot;), &quot;12pm&quot;, paste0(c(2,4,6,8,10),&quot;pm&quot;))) +
+        facet_wrap(~str_wrap(sr_type, width=19), scales=&quot;free_y&quot;) +
+        theme_classic() +
+        theme(axis.title.x=element_blank(), axis.title.y=element_blank(),
+              axis.text.x = element_text(size=7, angle = 270, hjust=-0.25, vjust = 0.5))</code></pre>
+<ul>
+<li>Add a column to the original sub table that notes the exact time and hour that each request was created. Then group that able by the new <code>hour</code> column.</li>
+<li>Generate a summary of requests per hour for each type of request.</li>
+<li>Calculate the maximum number of requests in one hour for each request type and then calculate the coefficient of variation for the request types to find those with the <em>most</em> variance over a day.</li>
+<li>Filter down to the top 10 most highly variant request types and plot them over the course of a day to compare.</li>
+</ul>
+<p><img src="data_analysis_files/figure-html/q3_plot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="question-4" class="section level2">
+<h2><strong>Question #4</strong></h2>
+<div id="which-departments-are-bestworst-at-closing-requests-quickly" class="section level3">
+<h3>Which departments are best/worst at closing requests quickly?</h3>
+<pre class="r"><code>dep_sp &lt;- select(sr, owner_department, sr_type, 
+                 status, created_date, closed_date) %&gt;% 
+          filter(status==&quot;completed&quot;) %&gt;% select(-status)
+dep_sp[,3:4] &lt;- lapply(dep_sp[,3:4], mdy_hms)
+dep_sp &lt;- mutate(dep_sp, dur_sec = as.numeric(difftime(dep_sp$closed_date,
+                                                dep_sp$created_date))
+                ) %&gt;% group_by(owner_department, sr_type) %&gt;% 
+       summarise(day_diff = difftime(closed_date,created_date, units=&quot;days&quot;) %&gt;% 
+              mean() %&gt;% round(digits=8), count=n()) %&gt;% filter(day_diff&gt;0.5)
+avg_speed &lt;- summarize(dep_sp, avg_req_n_days=mean(day_diff) %&gt;% round (2))</code></pre>
+</div>
+</div>
+<div id="need-to-still-add-summary-statement-from-code-above-like-after-q1" class="section level1">
+<h1>NEED TO STILL ADD SUMMARY STATEMENT FROM CODE ABOVE LIKE AFTER Q1</h1>
+<div id="bonus-section-on-budget." class="section level2">
+<h2>Bonus section on budget.</h2>
+<div id="looking-at-some-data-from-a-buget-survey-for-fy-2020." class="section level3">
+<h3>Looking at some data from a buget survey for FY 2020.</h3>
+<pre class="r"><code>budget &lt;- read.socrata(&quot;https://data.cityofchicago.org/api/views/drbg-ny73/rows.csv?accessType=DOWNLOAD&quot;, &quot;ykQDb7IDvb4jrHDEx6hk7f8uF&quot;)
+
+gbudget &lt;- gather(budget, cat, value, -c(date, zip_code, counter_column)) %&gt;% 
+           mutate(cat=gsub(&quot;(?&lt;=assignment)_&quot;,&quot;-&quot;,cat, perl = TRUE)) %&gt;% 
+           mutate(cat=gsub(&quot;(?&lt;=change)_&quot;,&quot;-&quot;,cat, perl = TRUE)) %&gt;% 
+           mutate(cat=gsub(&quot;(?&lt;=interest)_&quot;,&quot;-&quot;,cat, perl = TRUE)) %&gt;% 
+           separate(cat, c(&quot;category&quot;, &quot;type&quot;), sep=&quot;-&quot;) %&gt;% 
+           select(-counter_column) %&gt;% mutate(id=1:nrow(.))
+gbudget$value &lt;- gsub(&quot;Increase.*&quot;,&quot;increase&quot;,gbudget$value) %&gt;% 
+                 gsub(&quot;.*Same&quot;,&quot;no change&quot;,.) %&gt;% gsub(&quot;Reduce.*&quot;,&quot;reduce&quot;,.) %&gt;% 
+                 gsub(&quot;No Opinion&quot;,&quot;no opinion&quot;,.) %&gt;% tolower()
+gbudget$value[gbudget$value==&quot;&quot;] &lt;- NA
+gbudget$value[is.na(gbudget$value)] &lt;- &quot;no answer&quot;
+gb &lt;- filter(gbudget, category!=&quot;X_1000_assignment&quot;)
+gb_sum &lt;- summarize(group_by(gb, category, type, value), count=n()) %&gt;% 
+        filter(value!=&quot;no answer&quot;)
+gb_sum$category &lt;- gsub(&quot;_interest&quot;,&quot;_int&quot;,gb_sum$category) %&gt;% 
+                 gsub(&quot;_change&quot;,&quot;_cha&quot;, .) %&gt;% tolower()
+for (gbcat in gb_sum$category) {
+  plot &lt;- filter(gb_sum, category==gbcat)
+  if (grepl(&quot;_int$&quot;,gbcat)) {
+    plot$value &lt;- factor(plot$value, levels=c(&quot;true&quot;,&quot;false&quot;))
+  }else if (grepl(&quot;revenue&quot;,gbcat)){
+    plot$value &lt;- factor(plot$value, levels=c(&quot;increase&quot;,&quot;no change&quot;, &quot;no opinion&quot;))
+  }else if (grepl(&quot;spending&quot;,gbcat)){
+    plot$value &lt;- factor(plot$value, levels=c(&quot;increase&quot;,&quot;no change&quot;, &quot;reduce&quot;))
+  }
+  plot &lt;- ggplot(plot, aes(str_wrap(str_to_title(gsub(&quot;_&quot;,&quot; &quot;,type)),
+                                    width=16), count, fill=value)) +
+     geom_col(position=&quot;dodge&quot;) +
+     #scale_x_discrete(labels=function(x){sub(&quot;\\s&quot;, &quot;\n&quot;, x)}) +
+     labs(title=element_blank()) +
+     theme(axis.title.x=element_blank(),
+           axis.title.y=element_blank(),
+           legend.title=element_blank(),
+           axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
+    assign(gbcat, plot)
+}</code></pre>
+<ul>
+<li>The budget survey collected data on public interest in receiving more information about revenue and expenses.</li>
+</ul>
+<p><img src="data_analysis_files/figure-html/budget_plot_1-1.png" width="672" /><img src="data_analysis_files/figure-html/budget_plot_1-2.png" width="672" /></p>
+<ul>
+<li>The survey also asked questions on which revenue changes or spending changes could be made to balance the city’s budget. Note that there is no option offered in the revenue section for “decrease revenue”.</li>
+</ul>
+<p><img src="data_analysis_files/figure-html/budget_plot_2-1.png" width="672" /><img src="data_analysis_files/figure-html/budget_plot_2-2.png" width="672" /></p>
+<ul>
+<li>Finally, there was a question about how each respondent would allocate $1,000 of the city’s budget.</li>
+</ul>
+<p><img src="data_analysis_files/figure-html/1_k_assign-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
