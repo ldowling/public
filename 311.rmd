@@ -11,6 +11,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+[Return home](https://ldowling.github.io/public/index.html)
 ```{r dependencies, message=FALSE, include=FALSE, results=FALSE}
 source("utils.R")
 source("generic_functions/ez_setup.R")
