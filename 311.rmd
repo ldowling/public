@@ -283,6 +283,7 @@ max_dep_time <- as.numeric(avg_speed$avg_req_n_days[which(
 ```
 
 This question required a slightly different subset of the original data set. In this case I selected columns related to service request type and date, but also selected the `owner_department` column. To figure out which departments were the fastest and which were the slowest I used the "created" and "closed" dates for each request type. I used this column to create a summary of average time differential (in days) of the "created" and "closed" dates to get an average lifespan for each request type per department. Averaging these numbers together gives an average lifespan for a request for each department. From there it's as simple as sorting by lifespan.  
+
 ***
 ```{r q4_table, echo=FALSE, results = 'asis'}
 kable(avg_speed,align="lr",col.names=c("", "Average Life of Request (days)"))
