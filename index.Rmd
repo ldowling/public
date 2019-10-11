@@ -4,7 +4,6 @@ output:
   html_document:
     df_print: paged
     theme: readable
-    code_folding: hide
     self_contained: false
 editor_options:
   chunk_output_type: inline
