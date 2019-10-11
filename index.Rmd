@@ -3,8 +3,6 @@ title: "Lucas Dowling"
 output:
   html_document:
     df_print: paged
-    toc: true
-    toc_depth: 2
     theme: readable
     code_folding: hide
     self_contained: false
