@@ -9,8 +9,12 @@ editor_options:
   chunk_output_type: inline
 ---
 
-## Work in progress portfolio site to host various practice projects.
+#### Work in progress portfolio site to host various practice projects.
 
-## Here's a list of my current completed projects:
+### Contact Info:
+* lucasdowling98@gmail.com
+* \(312) 806-9799
+
+### Current completed projects:
 * [City of Chicago - 311 data analysis](https://ldowling.github.io/public/311.html)
 * [City of Chicago - Budget Survey analysis](https://ldowling.github.io/public/budget_analysis.html)
