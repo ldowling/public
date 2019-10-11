@@ -11,8 +11,6 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
-[Return home](https://ldowling.github.io/public/index.html)
-
 ```{r dependencies, message=FALSE, include=FALSE, results=FALSE}
 source("generic_functions/ez_setup.R")
 ez_setup(install=TRUE, extras=c("RSocrata","stringr","knitr","kableExtra"))
@@ -139,3 +137,5 @@ ggplot(assignment, aes(reorder(str_wrap(str_to_title(gsub("_"," ",type)),
             scale_y_continuous(labels = function(x){
                               sub("^","$",ifelse(str_length(x)==4,sub("(^\\d)","\\1,",x),x))})
 ```
+
+[Return home](https://ldowling.github.io/public/index.html)
