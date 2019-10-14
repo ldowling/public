@@ -309,6 +309,14 @@ nbh_diff <- mutate(nbh_plot_table, diff=abs(near_west_side-riverdale))
 # #            scale_y_log10() +
 #             theme(legend.title=element_blank(),
 #             axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
+
+ggplot(filter(nbh_plot_filter, sr_type!="311 INFORMATION ONLY CALL"), 
+                   aes(sr_type, count, fill=community.area.name)) +
+            geom_col(position="dodge") +
+#            scale_y_log10() +
+            theme(legend.title=element_blank(),
+            axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
+
             
 # Do some neighborhoods typically get service requests addressed more quickly
 #   than others?
