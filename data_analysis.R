@@ -65,9 +65,6 @@ dur_sum$day_diff <- as.numeric(round(dur_sum$day_diff, 2))
 #         max_dur[[1]]," ",max_dur[[2]])
 
 
-
-
-
 #2. Do categories of service requests seem to be related to time of year? ----
 ty <- mutate(sub, month_created=lubridate::month(sub$created_date,label=TRUE)) %>% 
   filter((month(created_date)>=month(Sys.Date()) & 
@@ -262,10 +259,57 @@ demo <- left_join(filter(nb, !is.na(area_id)),
 colnames(demo) <- tolower(colnames(demo))
 demo <- select(demo, area_id, community.area.name, zip, everything())
 # What neighborhoods have the highest and lowest number of service requests?
+# note: given the data set, this is the highest and lowest COMPLETED requests
+# would be interesting to look into TOTAL or even CANCELLED/INCOMPLETE
 sr_zip <- left_join(sr, select(demo, area_id, zip), by="area_id")
+
+nbh_sum <- group_by(sr_zip, area_id) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id")
+
+highest <- filter(nbh_sum, count==max(nbh_sum$count))$community.area.name
+lowest <- filter(nbh_sum, count==min(nbh_sum$count))$community.area.name
 
 # Is there anything notable about the SES (or related) demographics of those
 #   neighborhoods?
+demo_high <- filter(demo, community.area.name==highest) %>% select(-the_geom)
+demo_low <- filter(demo, community.area.name==lowest) %>% select(-the_geom)
+
+demo_high #- Demographics indicate that this area is has a more middle-class population
+          #  with levels of poverty and unemployment being much lower than the other area.
+          #  Total conjecture: High completion rate of service requests could be related to
+          #  type of request (maybe the requests here are easier?) and impression of safety
+          #  in the neighborhood.
+demo_low
+#so lets look at counts per neighborhood per service type for these two nbhs
+nbh_type_sum <- group_by(sr_zip, area_id, sr_type) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id") %>% 
+  filter(community.area.name%in%c(highest,lowest, "O'Hare"))
+
+nbh_plot_table <- select(nbh_type_sum, -area_id) %>% spread(community.area.name, count)
+nbh_plot_table[is.na(nbh_plot_table)] <- 0
+colnames(nbh_plot_table) <- gsub("(\\s+|[[:punct:]])","_",colnames(nbh_plot_table)) %>% tolower()
+#nbh_plot_filter <- filter(nbh_plot_table, count<1200)
+
+nbh_diff <- mutate(nbh_plot_table, diff=abs(near_west_side-riverdale))
+#looks like NWS has drastically more requests than RD in every regard, but the
+# VAST majority of SRT for NWS is the 311 information only request. This SRT
+# seems like it would be one of the easiest to complete and since it accounts for
+# such a huge number of NWS's SRs it makes sense that in a count of completed requests
+# this would put NWS at such a high ranking. Potential reason for high 311 info
+# requests: Union Station, Greyhound Bus station, Illinois Medical District. 
+# The neighborhood with the next most requests is O'Hare who's biggest SRT by 
+# far is aircraft noise complaint at ~240,000 with the next most common being 
+# "cab feedback" at ~640! It does seem though that both of these SRTs are 
+# related to the airport.
+
+#--plotting the counts isn't that helpful due to the huge range
+# ggplot(filter(nbh_plot_filter, sr_type!="311 INFORMATION ONLY CALL"), 
+#                    aes(sr_type, count, fill=community.area.name)) +
+#             geom_col(position="dodge") +
+# #            scale_y_log10() +
+#             theme(legend.title=element_blank(),
+#             axis.text.x = element_text(angle=270, hjust=, vjust=0.5))
+            
 # Do some neighborhoods typically get service requests addressed more quickly
 #   than others?
 # Is there anything notable about the demographics?
