@@ -320,3 +320,10 @@ max_dep_time <- as.numeric(avg_speed$avg_req_n_days[which(
 #generate output table
 kable(avg_speed,align="lr",col.names=c("", "Average Life of Request (days)"))
 ```
+
+  
+<br>
+<br>
+<br>
+<br>
+<br>

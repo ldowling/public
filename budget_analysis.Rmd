@@ -139,3 +139,10 @@ ggplot(assignment, aes(reorder(str_wrap(str_to_title(gsub("_"," ",type)),
             scale_y_continuous(labels = function(x){
                               sub("^","$",ifelse(str_length(x)==4,sub("(^\\d)","\\1,",x),x))})
 ```
+
+  
+<br>
+<br>
+<br>
+<br>
+<br>
