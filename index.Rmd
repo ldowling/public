@@ -3,18 +3,56 @@ title: "Lucas Dowling"
 output:
   html_document:
     df_print: paged
-    theme: readable
+    theme: flatly
     self_contained: false
 editor_options:
   chunk_output_type: inline
 ---
 
-#### Work in progress portfolio site to host various practice projects.
+> For the past several years I've worked and grown with the TMW Center for Early Learning + Public health. I started out there as a research assistant, visiting participants and going through introductions and onboarding paperwork with them. I then moved into a role as head of transcription for a short while before settling in my current position as Data Coordinator. In my current position I work with large volumes of data in varying levels of structure to clean, organize, and analyze it to provide iterative feedback to the intervention design teams at the Center.
 
+***
 ### Contact Info:
 * lucasdowling98@gmail.com
 * \(312) 806-9799
 
+***
+### Skills
+* R programming, specializing in organizing unstructured data
+* Data cleaning, analysis, report generation
+* Survey data collection, primarily with the REDCap platform
+* Social Science transcription and observational coding
+* Managing and training small teams
+
+***
+### Work History
+#### TMW Center for Early Learning + Public Health
+##### Data Coordinator
+###### February 2017 - Present
+* Manage data processing and curation for several ongoing longitudinal research studies
+* Use R scripting and Excel/Google Sheets to expedite data cleaning and processing and to track data collection
+* Project timelines for transcription completion. 
+* Continue to execute the responsibilities of my previous position as Head of Transcription.
+
+##### Head of Transcription
+###### June 2016 - February 2017
+* Led a team of transcriptionists in transcribing videos of parent-child interaction for the TMW Longitudinal research study 
+* Trained new members of the team
+* Established and upheld standards of inter-coder reliability
+* Adapted the coding manual of another research project at the University of Chicago to suit TMW’s needs
+
+##### Research Assistant
+###### July 2015 - June 2016
+*	Met with newly recruited participants in their homes to go over onboarding paperwork with them and introduce them to the study
+*	Explained participant responsibilities and got their informed consent 
+*	Collected survey and video data from participants
+*	Trained participants to use the LENA data collection 
+
+***
+### Education
+#### University of Florida - Bachelor of Arts in Anthropology, awarded 2013
+
+***
 ### Current completed projects:
 * [City of Chicago - 311 data analysis](https://ldowling.github.io/public/311.html)
 * [City of Chicago - Budget Survey analysis](https://ldowling.github.io/public/budget_analysis.html)
