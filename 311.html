@@ -20,6 +20,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
@@ -169,6 +172,63 @@ summary {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -176,6 +236,16 @@ summary {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -196,14 +266,6 @@ summary {
 
 </div>
 
-<div id="TOC">
-<ul>
-<li><a href="#question-1"><strong>Question #1</strong></a></li>
-<li><a href="#question-2"><strong>Question #2</strong></a></li>
-<li><a href="#question-3"><strong>Question #3</strong></a></li>
-<li><a href="#question-4"><strong>Question #4</strong></a></li>
-</ul>
-</div>
 
 <p><a href="https://ldowling.github.io/public/index.html">Return home</a></p>
 <div id="using-data-collected-about-311-service-requests-in-the-city-of-chicago-to-answer-the-following-questions" class="section level3">
@@ -211,19 +273,16 @@ summary {
 <ol style="list-style-type: decimal">
 <li>What category of service request is addressed the fastest? The slowest?</li>
 <li>Do categories of service requests seem to be related to time of year?</li>
+<li>Do categories of service requests seem to be related to time of day?</li>
 <li>Which departments are best/worst at closing requests quickly?</li>
-<li>What kinds of service requests might be related to police presence?</li>
-<li>Which areas of budget changes are most/least popular?</li>
 </ol>
-<div id="the-data-file-used-as-reference-for-the-following-analysis-is-a-subset-of-the-311-service-requests-data-set-hosted-by-the-city-of-chicago-data-portal." class="section level4">
-<h4>The data file used as reference for the following analysis is a subset of the <a href="https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy/data">311 Service Requests</a> data set hosted by the <a href="https://data.cityofchicago.org">City of Chicago Data Portal</a>.</h4>
+<p>The data file used as reference for the following analysis is a subset of the <a href="https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy/data">311 Service Requests</a> data set hosted by the <a href="https://data.cityofchicago.org">City of Chicago Data Portal</a>.</p>
 <p>Though I was able to subset and filter the original 311 data set, to a certain degree, on the Data Portal itself, I still needed to modify it a little more. Changes include converting column names to lowercase and creating an additional subset that most of the questions will reference. I will refer to this below as “the sub table.” I also convert the date columns to the POSIXct format so R can recognize them as such, since they were initially stored as character strings.</p>
 <pre class="r"><code>sr &lt;- data.table::fread(&quot;https://data.cityofchicago.org/api/views/dm4w-zcp5/rows.csv?accessType=DOWNLOAD&quot;)
 colnames(sr) &lt;- tolower(colnames(sr))
 colnames(sr) &lt;- gsub(&quot;community_area&quot;, &quot;area_id&quot;, colnames(sr))
 sub &lt;- select(sr, sr_number, sr_type, status, ends_with(&quot;_date&quot;))
 sub[,4:5] &lt;- lapply(sub[,4:5], mdy_hms)</code></pre>
-</div>
 </div>
 <div id="question-1" class="section level2">
 <h2><strong>Question #1</strong></h2>
@@ -5042,6 +5101,8 @@ kable(avg_speed,align=&quot;lr&quot;,col.names=c(&quot;&quot;, &quot;Average Lif
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -5079,6 +5140,32 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

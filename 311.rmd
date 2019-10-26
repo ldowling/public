@@ -5,6 +5,7 @@ output:
     df_print: paged
     toc: true
     toc_depth: 2
+    toc_float: true
     theme: flatly
     code_folding: hide
     self_contained: false
@@ -21,11 +22,11 @@ ez_setup(install=FALSE, extras=c("RSocrata","stringr","knitr","kableExtra"))
 ### Using data collected about 311 service requests in the city of chicago to answer the following questions:
 1. What category of service request is addressed the fastest? The slowest?
 2. Do categories of service requests seem to be related to time of year?
-3. Which departments are best/worst at closing requests quickly?
-4. What kinds of service requests might be related to police presence?
-5. Which areas of budget changes are most/least popular?
+3. Do categories of service requests seem to be related to time of day?
+4. Which departments are best/worst at closing requests quickly?
 
-#### The data file used as reference for the following analysis is a subset of the [311 Service Requests](https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy/data) data set hosted by the [City of Chicago Data Portal](https://data.cityofchicago.org).
+
+The data file used as reference for the following analysis is a subset of the [311 Service Requests](https://data.cityofchicago.org/Service-Requests/311-Service-Requests/v6vf-nfxy/data) data set hosted by the [City of Chicago Data Portal](https://data.cityofchicago.org).
 
 Though I was able to subset and filter the original 311 data set, to a certain degree, on the Data Portal itself, I still needed to modify it a little more. Changes include converting column names to lowercase and creating an additional subset that most of the questions will reference. I will refer to this below as "the sub table." I also convert the date columns to the POSIXct format so R can recognize them as such, since they were initially stored as character strings.
 ```{r setup, message=FALSE, cache=TRUE}
