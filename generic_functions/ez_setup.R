@@ -7,7 +7,7 @@ ez_setup <- function(extras=NULL, install=FALSE){
   if (install) {
     to_install <- spacs[!spacs%in%inpacs]
     if (length(to_install)>0) {
-      install.packages(to_install)
+      install.packages(to_install, repos = "http://cran.us.r-project.org")
     }else{
       message("Standard packages already installed.")
     }
@@ -21,7 +21,7 @@ ez_setup <- function(extras=NULL, install=FALSE){
   if (install&!is.null(extras)) {
     to_install <- extras[!extras%in%inpacs]
     if (length(to_install)>0) {
-      install.packages(to_install)
+      install.packages(to_install, repos = "http://cran.us.r-project.org")
     }else{
       message("Extra packages already installed.")
     }

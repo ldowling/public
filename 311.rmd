@@ -16,7 +16,7 @@ editor_options:
 ```{r dependencies, message=FALSE, include=FALSE, results=FALSE}
 source("utils.R")
 source("generic_functions/ez_setup.R")
-ez_setup(install=TRUE, extras=c("RSocrata","stringr","knitr","kableExtra"))
+ez_setup(install=FALSE, extras=c("RSocrata","stringr","knitr","kableExtra"))
 ```
 ### Using data collected about 311 service requests in the city of chicago to answer the following questions:
 1. What category of service request is addressed the fastest? The slowest?
