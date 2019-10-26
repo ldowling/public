@@ -5,7 +5,7 @@ output:
     df_print: paged
     toc: true
     toc_depth: 2
-    theme: readable
+    theme: flatly
     code_folding: hide
     self_contained: false
 editor_options:
