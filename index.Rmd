@@ -53,6 +53,6 @@ editor_options:
 #### University of Florida - Bachelor of Arts in Anthropology, awarded 2013
 
 ***
-### Current completed projects:
+### Completed projects:
 * [City of Chicago - 311 data analysis](https://ldowling.github.io/public/311.html)
 * [City of Chicago - Budget Survey analysis](https://ldowling.github.io/public/budget_analysis.html)
