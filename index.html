@@ -7,7 +7,6 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,6 +86,7 @@ code {
 }
 img {
   max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -160,6 +160,18 @@ summary {
 }
 </style>
 
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
 <!-- code folding -->
 
 
@@ -191,7 +203,7 @@ summary {
 <div id="contact-info" class="section level3">
 <h3>Contact Info:</h3>
 <ul>
-<li><a href="mailto:lucasdowling98@gmail.com" class="email">lucasdowling98@gmail.com</a></li>
+<li><a href="mailto:lucasdowling98@gmail.com">lucasdowling98@gmail.com</a></li>
 <li>(312) 806-9799</li>
 </ul>
 <hr />
@@ -261,6 +273,7 @@ summary {
 <h3>Completed projects:</h3>
 <ul>
 <li><a href="https://ldowling.github.io/public/311.html">City of Chicago - 311 data analysis</a></li>
+<li><a href="https://ldowling.github.io/public/neighborhood.html">City of Chicago - 311 by Neighborhood analysis</a></li>
 <li><a href="https://ldowling.github.io/public/budget_analysis.html">City of Chicago - Budget Survey analysis</a></li>
 </ul>
 <p><br> <br> <br> <br> <br></p>
@@ -283,23 +296,6 @@ $(document).ready(function () {
 
 
 </script>
-
-<!-- tabsets -->
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
-<!-- code folding -->
-
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

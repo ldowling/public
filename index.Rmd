@@ -55,6 +55,7 @@ editor_options:
 ***
 ### Completed projects:
 * [City of Chicago - 311 data analysis](https://ldowling.github.io/public/311.html)
+* [City of Chicago - 311 by Neighborhood analysis](https://ldowling.github.io/public/neighborhood.html)
 * [City of Chicago - Budget Survey analysis](https://ldowling.github.io/public/budget_analysis.html)
   
 <br>

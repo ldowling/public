@@ -241,9 +241,12 @@ ggplot(assignment, aes(reorder(str_wrap(str_to_title(gsub("_"," ",type)),
 
 # Cleaning geographic and demographic input data ----
 #initial read
-com_area <- read.csv("data_files/CommAreas.csv", stringsAsFactors=FALSE)
-nb <- read.csv("data_files/Census_Data.csv", stringsAsFactors=FALSE)
-zips <- read.csv("data_files/Zip_Codes.csv", stringsAsFactors=FALSE)
+com_area <- read.csv("https://data.cityofchicago.org/api/views/igwz-8jzy/rows.csv?accessType=DOWNLOAD", 
+                     stringsAsFactors=FALSE)
+nb <- read.csv("https://data.cityofchicago.org/api/views/kn9c-c2s2/rows.csv?accessType=DOWNLOAD", 
+               stringsAsFactors=FALSE)
+zips <- read.csv("https://data.cityofchicago.org/api/views/unjd-c2ca/rows.csv?accessType=DOWNLOAD", 
+                 stringsAsFactors=FALSE)
 
 #standardizing key-column names for join below
 colnames(com_area) <- gsub("AREA_NUM_1","area_id", colnames(com_area))
@@ -278,6 +281,12 @@ demo_high #- Demographics indicate that this area is has a more middle-class pop
           #  type of request (maybe the requests here are easier?) and impression of safety
           #  in the neighborhood.
 demo_low
+comparison <- bind_rows(demo_high, demo_low) %>% select(community.area.name,everything())
+colnames(comparison) <- c("Area ID", "Area Name", "ZIP", "% Housing Crowded",
+                          "% Household Below Poverty", "% 16 y/o Unemployed",
+                          "% 25 y/o Without HS Diploma", "% Under 18 or Over 64",
+                          "Per Capita Income", "Hardship Index")
+comparison <- t(comparison)
 #so lets look at counts per neighborhood per service type for these two nbhs
 nbh_type_sum <- group_by(sr_zip, area_id, sr_type) %>% summarise(count=n()) %>% 
   left_join(select(demo, area_id, community.area.name),.,by="area_id") %>% 
@@ -301,6 +310,8 @@ nbh_diff <- mutate(nbh_plot_table, diff=abs(near_west_side-riverdale))
 # far is aircraft noise complaint at ~240,000 with the next most common being 
 # "cab feedback" at ~640! It does seem though that both of these SRTs are 
 # related to the airport.
+
+# TODO: Scale investigation on population size!
 
 #--plotting the counts isn't that helpful due to the huge range
 # ggplot(filter(nbh_plot_filter, sr_type!="311 INFORMATION ONLY CALL"), 

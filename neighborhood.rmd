@@ -1,0 +1,165 @@
+---
+title: "311 by Neighborhood Analysis"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: flatly
+    code_folding: hide
+    self_contained: false
+editor_options:
+  chunk_output_type: inline
+---
+[Return home](https://ldowling.github.io/public/index.html)
+
+```{r dependencies, message=FALSE, include=FALSE, results=FALSE}
+source("utils.R")
+source("generic_functions/ez_setup.R")
+ez_setup(install=FALSE, extras=c("RSocrata","stringr","knitr","kableExtra"))
+```
+
+```{r data, message=FALSE, results=FALSE, cache=TRUE}
+#using same initial data read as the first 311 service request analysis
+sr <- data.table::fread("https://data.cityofchicago.org/api/views/dm4w-zcp5/rows.csv?accessType=DOWNLOAD")
+colnames(sr) <- tolower(colnames(sr))
+colnames(sr) <- gsub("community_area", "area_id", colnames(sr))
+sub <- select(sr, sr_number, sr_type, status, ends_with("_date"))
+sub[,4:5] <- lapply(sub[,4:5], mdy_hms)
+# Cleaning geographic and demographic input data
+com_area <- read.csv("https://data.cityofchicago.org/api/views/igwz-8jzy/rows.csv?accessType=DOWNLOAD", 
+                     stringsAsFactors=FALSE)
+nb <- read.csv("https://data.cityofchicago.org/api/views/kn9c-c2s2/rows.csv?accessType=DOWNLOAD", 
+               stringsAsFactors=FALSE)
+zips <- read.csv("https://data.cityofchicago.org/api/views/unjd-c2ca/rows.csv?accessType=DOWNLOAD", 
+                 stringsAsFactors=FALSE)
+
+#standardizing key-column names for join below
+colnames(com_area) <- gsub("AREA_NUM_1","area_id", colnames(com_area))
+colnames(nb) <- gsub("Community\\.Area\\.Number","area_id", colnames(nb))
+colnames(zips) <- gsub("OBJECTID","area_id", colnames(zips))
+
+#making final demo data object and dropping constituent objects
+demo <- left_join(filter(nb, !is.na(area_id)), 
+                  select(zips, area_id, ZIP), by="area_id") %>% 
+        left_join(select(com_area, area_id, the_geom), by="area_id");rm(com_area,nb,zips)
+colnames(demo) <- tolower(colnames(demo))
+demo <- select(demo, area_id, community.area.name, zip, everything())
+```
+
+
+## **Question #1** 
+### What neighborhoods have the highest and lowest number of service requests?
+* note: For this analysis I am only counting completed requests. I plan to look at total and open/incomplete requests in the future.
+```{r q1, echo=FALSE, cache=TRUE}
+#add zip codes to original service request object
+sr_zip <- left_join(sr, select(demo, area_id, zip), by="area_id")
+#group by area_id and summarize, then add demographics data to the summary
+nbh_sum <- group_by(sr_zip, area_id) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id") %>% 
+  select(-area_id)
+#filter to just the highest and lowest community names
+highest <- filter(nbh_sum, count==max(nbh_sum$count))$community.area.name
+lowest <- filter(nbh_sum, count==min(nbh_sum$count))$community.area.name
+```
+
+This summarization of the data shows that the community with the highest number of 311 service requests is **`r highest`**, and the community with the lowest number is **`r lowest`**.
+```{r q1_table, echo=FALSE}
+kable(nbh_sum[order(nbh_sum$count, decreasing=TRUE),],align="lc", 
+      row.names=FALSE, col.names=c("Area Name", "Number of Requests")) %>% 
+  kable_styling() %>% scroll_box(height="400px")
+```
+```{r q1_code, eval=FALSE}
+#add zip codes to original service request object
+sr_zip <- left_join(sr, select(demo, area_id, zip), by="area_id")
+#group by area_id and summarize, then add demographics data to the summary
+nbh_sum <- group_by(sr_zip, area_id) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id")
+#filter to just the highest and lowest community names
+highest <- filter(nbh_sum, count==max(nbh_sum$count))$community.area.name
+lowest <- filter(nbh_sum, count==min(nbh_sum$count))$community.area.name
+
+#generate output table
+kable(nbh_sum[order(nbh_sum$count),],align="lc", 
+      col.names=c("Area ID", "Area Name", "Number of Requests")) %>% 
+  kable_styling() %>% scroll_box(height="400px")
+```
+
+## **Question #2**
+### Is there anything notable about the SES (or related) demographics of those neighborhoods?
+```{r q2, echo=FALSE, results="hide", cache=TRUE}
+#get the demographics of the two communites found previously. Dropping `the_geom` because it's large and not relevant.
+demo_high <- filter(demo, community.area.name==highest) %>% select(-the_geom)
+demo_low <- filter(demo, community.area.name==lowest) %>% select(-the_geom)
+comparison <- bind_rows(demo_high, demo_low) %>% select(community.area.name,everything())
+colnames(comparison) <- c("Area Name", "Area ID", "ZIP", "% Housing Crowded",
+                          "% Household Below Poverty", "% 16 y/o Unemployed",
+                          "% 25 y/o Without HS Diploma", "% Under 18 or Over 64",
+                          "Per Capita Income", "Hardship Index")
+comparison <- t(comparison)
+```
+
+```{r q2_table, echo=FALSE}
+kable(comparison,align="lc") %>% 
+  kable_styling() %>% scroll_box(height="400px")
+```
+<br>
+This comparison raised the question of why Near West Side would have so many more 311 service requests than Riverdale, so I wanted to look into the data in more detail.
+```{r q2b, echo=FALSE, results="hide",cache=TRUE}
+#summarizing counts of 311 requests by type, per neighborhood. Including O'hare because it was the next highest after Near West Side
+nbh_type_sum <- group_by(sr_zip, area_id, sr_type) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id") %>% 
+  filter(community.area.name%in%c(highest,lowest, "O'Hare"))
+
+nbh_summary <- select(nbh_type_sum, -area_id) %>% spread(community.area.name, count)
+nbh_summary[is.na(nbh_summary)] <- 0
+colnames(nbh_summary) <- gsub("(\\s+|[[:punct:]])","_",colnames(nbh_summary)) %>% tolower()
+nbh_diff <- mutate(nbh_summary, diff=abs(near_west_side-riverdale)) %>% select(-o_hare)
+
+```
+
+```{r q2b_table, echo=FALSE}
+kable(nbh_diff[order(nbh_diff$diff,decreasing=TRUE),],align="lc", row.names=FALSE,
+      col.names=c("Request Type", "Near West Side","Riverdale","Difference")) %>% 
+  kable_styling() %>% scroll_box(height="400px")
+```
+<br>
+I originally wanted to plot this data to get a visual representation of the distribution of request types between the two neighborhoods. I found, though, that the disparity between them was so great that any graph I made would either be unreadable due to the extreme range of data points, or misrepresentative due to the scaling modifications I would need to introduce to make the graph readable. 
+
+```{r q2_code, eval=FALSE}
+demo_high <- filter(demo, community.area.name==highest) %>% select(-the_geom)
+demo_low <- filter(demo, community.area.name==lowest) %>% select(-the_geom)
+comparison <- bind_rows(demo_high, demo_low) %>% select(community.area.name,everything())
+colnames(comparison) <- c("Area ID", "Area Name", "ZIP", "% Housing Crowded",
+                          "% Household Below Poverty", "% 16 y/o Unemployed",
+                          "% 25 y/o Without HS Diploma", "% Under 18 or Over 64",
+                          "Per Capita Income", "Hardship Index")
+comparison <- t(comparison)
+
+kable(comparison,align="lc") %>% 
+  kable_styling() %>% scroll_box(height="400px")
+
+nbh_type_sum <- group_by(sr_zip, area_id, sr_type) %>% summarise(count=n()) %>% 
+  left_join(select(demo, area_id, community.area.name),.,by="area_id") %>% 
+  filter(community.area.name%in%c(highest,lowest, "O'Hare"))
+
+nbh_plot_table <- select(nbh_type_sum, -area_id) %>% spread(community.area.name, count)
+nbh_plot_table[is.na(nbh_plot_table)] <- 0
+colnames(nbh_plot_table) <- gsub("(\\s+|[[:punct:]])","_",colnames(nbh_plot_table)) %>% tolower()
+
+nbh_diff <- mutate(nbh_plot_table, diff=abs(near_west_side-riverdale))
+
+kable(nbh_diff[order(nbh_diff$diff,decreasing=TRUE),],align="lc", row.names=FALSE,
+      col.names=c("Request Type", "Near West Side","Riverdale","Difference")) %>% 
+  kable_styling() %>% scroll_box(height="400px")
+```
+
+## More to come soon!
+
+  
+<br>
+<br>
+<br>
+<br>
+<br>
