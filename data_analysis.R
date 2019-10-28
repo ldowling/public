@@ -3,8 +3,6 @@ source("generic_functions/ez_setup.R")
 ez_setup(install=TRUE, extras=c("RSocrata","stringr","knitr","kableExtra"))
 
 #service requests ----
-#TODO: figure out non-local way of sourcing the 311 data.
-
 sr <- data.table::fread("https://data.cityofchicago.org/api/views/dm4w-zcp5/rows.csv?accessType=DOWNLOAD")
 colnames(sr) <- tolower(colnames(sr))
 colnames(sr) <- gsub("community_area", "area_id", colnames(sr))
@@ -296,7 +294,9 @@ nbh_diff <- mutate(nbh_plot_table, diff=abs(near_west_side-riverdale))
 # seems like it would be one of the easiest to complete and since it accounts for
 # such a huge number of NWS's SRs it makes sense that in a count of completed requests
 # this would put NWS at such a high ranking. Potential reason for high 311 info
-# requests: Union Station, Greyhound Bus station, Illinois Medical District. 
+# requests: Union Station, Greyhound Bus station, Illinois Medical District? It 
+# could just be that a lot of 311 info requests get assigned this neighborhood
+# due to it being where the chicago city gov't is (?).
 # The neighborhood with the next most requests is O'Hare who's biggest SRT by 
 # far is aircraft noise complaint at ~240,000 with the next most common being 
 # "cab feedback" at ~640! It does seem though that both of these SRTs are 
