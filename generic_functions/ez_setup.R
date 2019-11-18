@@ -1,4 +1,6 @@
 ez_setup <- function(extras=NULL, install=FALSE){
+  #source gsub2
+  devtools::source_url("https://raw.githubusercontent.com/ldowling/public/master/generic_functions/gsub2.R")
   #list already installed packages
   inpacs <- rownames(installed.packages())
   #list of standard packages (modify as desired)
